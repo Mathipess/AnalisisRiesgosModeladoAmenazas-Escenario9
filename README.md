@@ -48,6 +48,13 @@ El sistema bajo análisis corresponde al **Escenario 9: Plataforma Ridesharing**
 1. Se asume que la infraestructura de la nube pública donde se aloja la Zona Interna cumple con los estándares físicos de seguridad de centros de datos de nivel Tier III o superior.
 2. Se asume que los SDKs oficiales de terceros provistos por Stripe y Google Maps no contienen vulnerabilidades de día cero (*Zero-Days*) en el momento del análisis y se actualizan de forma continua según el ciclo de parches de los proveedores.
 
+
+### 1.4 Herramientas de IA Utilizadas y Declaración
+En cumplimiento con las directivas, el equipo utilizó herramientas de Inteligencia Artificial bajo el paradigma de co-piloto de ingeniería de seguridad. Las interacciones completas, refinamientos y cadenas de prompts se encuentran auditables en la carpeta `prompts/`.
+
+- **Gemini (Advanced):** Utilizado para la orquestación del marco metodológico, optimización estructural de archivos Git y diseño del pipeline de controles lógicos basados en el modelo Zero-Trust.
+
+
 ---
 
 ## Estructura del Repositorio Git
