@@ -1,0 +1,45 @@
+@startuml
+skinparam handwritten false
+skinparam shadowing text
+
+' --- COMPONENTES ---
+
+' Zona Externa / No Confiable
+rectangle "App Pasajero\n(iOS / Android)" as AppPasajero
+rectangle "App Conductor\n(iOS / Android)" as AppConductor
+
+' Frontera de Red Externa a Cloud Pública
+rectangle "[ TRUST BOUNDARY 1 ] \nFrontera de Red Externa" as TB1
+
+' Zona Perimetral / DMZ
+rectangle "API Gateway\nBalanceador de Carga" as Gateway
+
+' Frontera de Microservicios Internos
+rectangle "[ TRUST BOUNDARY 2 ] \nFrontera Interna (Microservicios)" as TB2
+
+' Zona Interna
+rectangle "T02: Backend Node.js\n(Matching Engine / Orquestador)" as Backend
+database "T04: Redis Cache\n(Ubicación en vivo)" as Redis
+database "T03: PostgreSQL\n(Historial / Usuarios)" as Postgres
+
+' APIs Externas
+rectangle "Google Maps API\n(Ubicación)" as GoogleMaps
+rectangle "Stripe API\n(Pasarela de Pagos)" as Stripe
+
+' --- FLUJOS DE DATOS Y NOTAS DE PROTOCOLO ---
+
+AppPasajero ---> TB1
+AppConductor ---> TB1
+
+TB1 ---> Gateway : **HTTPS / TLS 1.3**\n(SSL Pinning)
+
+Gateway ---> TB2
+
+TB2 ---> Backend : **Validación JWT**\n(Proxy Interno)
+
+Backend ---> GoogleMaps : **API Ext**\n(HTTPS REST)
+Backend ---> Stripe : **API Ext**\n(Tokenización PCI)
+Backend ---> Redis : **TCP / Autenticado**\n(Pings GPS)
+Backend ---> Postgres : **SQL / mTLS**\n(Anti-IDOR Check)
+
+@enduml
